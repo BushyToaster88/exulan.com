@@ -76,7 +76,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 		code: ({ className, ...props }) => (
 			<code
 				className={cn(
-					"relative rounded-md border px-1 py-auto font-mono text-sm text-center",
+					"relative rounded-md border px-1 py-auto font-mono text-sm text-center [:not(pre)>&]:[overflow-wrap:anywhere]",
 					className,
 				)}
 				{...props}
