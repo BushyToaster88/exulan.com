@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request_target:
+    branches: [main, master]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build:
+    uses: ./.github/workflows/setup-project.yml
+    with:
+      # run-build: true
+      run-lint: true
+    secrets: inherit

@@ -1,0 +1,60 @@
+{
+	"typescript": {
+		"lineWidth": 180,
+		"indentWidth": 4,
+		"useTabs": true,
+		"semiColons": "asi",
+		"quoteStyle": "alwaysDouble",
+		"quoteProps": "consistent",
+		"nextControlFlowPosition": "nextLine",
+		"module.sortImportDeclarations": "caseSensitive"
+	},
+	"json": {
+		"indentWidth": 4,
+		"useTabs": true
+	},
+	"toml": {
+	},
+	"malva": {
+		"printWidth": 100,
+		"useTabs": true,
+		"indentWidth": 4,
+		"hexCase": "upper",
+		"hexColorLength": "long",
+		"quotes": "alwaysDouble",
+		"formatComments": true,
+		"alignComments": true,
+		"declarationOrder": "alphabetical"
+	},
+	"markup": {
+		"useTabs": true,
+		"quotes": "double",
+		"indentWidth": 4,
+		"formatComments": true,
+		"scriptIndent": true,
+		"styleIndent": true
+	},
+	"yaml": {
+		"indentWidth": 2,
+		"quotes": "preferDouble",
+		"formatComments": true
+	},
+	"excludes": [
+		"**/node_modules",
+		"**/*-lock.json",
+		"next-env.d.ts",
+		"public/wasm",
+		"src/wasm/build",
+		"src/wasm/*.js",
+		"src/components/ui/*",
+		"!src/components/ui/_icons.tsx"
+	],
+	"plugins": [
+		"https://plugins.dprint.dev/typescript-0.95.13.wasm",
+		"https://plugins.dprint.dev/json-0.21.1.wasm",
+		"https://plugins.dprint.dev/toml-0.7.0.wasm",
+		"https://plugins.dprint.dev/g-plane/malva-v0.15.1.wasm",
+		"https://plugins.dprint.dev/g-plane/markup_fmt-v0.27.1.wasm",
+		"https://plugins.dprint.dev/g-plane/pretty_yaml-v0.5.1.wasm"
+	]
+}

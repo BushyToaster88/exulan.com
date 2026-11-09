@@ -1,0 +1,53 @@
+name: "Setup project"
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: "Node.js version"
+        required: false
+        default: "24"
+        type: string
+      run-build:
+        description: "Run `npm run build`"
+        required: false
+        default: false
+        type: boolean
+      run-lint:
+        description: "Run `npm run lint`"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+          fetch-depth: 25
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: "npm"
+
+      - name: Install dependencies
+        shell: bash
+        run: npm ci
+
+      - name: Build
+        shell: bash
+        if: inputs.run-build == true
+        id: steps-build
+        run: npm run build
+
+      - name: Lint
+        shell: bash
+        if: inputs.run-lint == true
+        id: steps-lint
+        run: npm run lint

@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+	/* Main colors (LIGHT) */
+	--color-theme-bg-0: #FFFFFF;
+	--color-theme-bg-1: #D0D0D0;
+	--color-theme-bg-2: #B0B0B0;
+	--color-theme-bg-3: #909090;
+	--color-theme-fg-0: #222222;
+	--color-theme-fg-1: #1A1A1A;
+	--color-theme-fg-2: #333333;
+	--color-theme-fg-3: #444444;
+	/* CMY/RGB accents (LIGHT) */
+	--color-theme-c-0: #10FFFF;
+	--color-theme-c-1: #20C0C0;
+	--color-theme-c-2: #408080;
+	--color-theme-c-3: #204040;
+	--color-theme-m-0: #FF10FF;
+	--color-theme-m-1: #C020C0;
+	--color-theme-m-2: #804080;
+	--color-theme-m-3: #402040;
+	--color-theme-y-0: #FFFF40;
+	--color-theme-y-1: #C0C020;
+	--color-theme-y-2: #808010;
+	--color-theme-y-3: #404008;
+	--color-theme-r-0: #FF4040;
+	--color-theme-r-1: #C02020;
+	--color-theme-r-2: #801010;
+	--color-theme-r-3: #400808;
+	--color-theme-g-0: #40FF40;
+	--color-theme-g-1: #20C020;
+	--color-theme-g-2: #108010;
+	--color-theme-g-3: #084008;
+	--color-theme-b-0: #4040FF;
+	--color-theme-b-1: #2020C0;
+	--color-theme-b-2: #101080;
+	--color-theme-b-3: #080840;
+	/* ui-overlays (LIGHT) */
+	--ui-hover-overlay: rgb(0 0 0 / 0.10);
+	--ui-active-overlay: rgb(0 0 0 / 0.15);
+	--ui-contrast-overlay: rgb(0 0 0 / 0.50);
+	--ui-disabled-overlay: rgb(255 255 255 / 0.40);
+	/* shadcn/ui mappings */
+	--radius: 0.35rem;
+	--background: var(--color-theme-bg-0);
+	--foreground: var(--color-theme-fg-0);
+	--card: var(--color-theme-bg-1);
+	--card-foreground: var(--color-theme-fg-0);
+	--popover: var(--color-theme-bg-1);
+	--popover-foreground: var(--color-theme-fg-0);
+	--primary: var(--color-theme-fg-0);
+	--primary-foreground: var(--color-theme-bg-0);
+	--secondary: var(--color-theme-bg-2);
+	--secondary-foreground: var(--color-theme-fg-0);
+	--muted: var(--ui-hover-overlay);
+	--muted-foreground: var(--color-theme-fg-2);
+	--accent: var(--ui-active-overlay);
+	--accent-foreground: var(--color-theme-fg-0);
+	--destructive: var(--color-theme-r-1);
+	--destructive-foreground: #FFFFFF;
+	--border: var(--color-theme-bg-3);
+	--input: var(--color-theme-bg-3);
+	--ring: var(--color-theme-fg-0);
+	--chart-1: var(--color-theme-r-1);
+	--chart-2: var(--color-theme-g-1);
+	--chart-3: var(--color-theme-b-1);
+	--chart-4: var(--color-theme-c-1);
+	--chart-5: var(--color-theme-m-1);
+	--sidebar: var(--color-theme-bg-1);
+	--sidebar-foreground: var(--color-theme-fg-0);
+	--sidebar-primary: var(--color-theme-fg-0);
+	--sidebar-primary-foreground: var(--color-theme-bg-0);
+	--sidebar-accent: var(--color-theme-bg-2);
+	--sidebar-accent-foreground: var(--color-theme-fg-0);
+	--sidebar-border: var(--color-theme-bg-2);
+	--sidebar-ring: var(--color-theme-fg-0);
+}
+
+.dark {
+	/* Main colors (DARK) */
+	--color-theme-bg-0: #222222;
+	--color-theme-bg-1: #1A1A1A;
+	--color-theme-bg-2: #333333;
+	--color-theme-bg-3: #444444;
+	--color-theme-fg-0: #FFFFFF;
+	--color-theme-fg-1: #D0D0D0;
+	--color-theme-fg-2: #B0B0B0;
+	--color-theme-fg-3: #909090;
+	/* CMY/RGB accents (DARK) */
+	--color-theme-c-0: #108080;
+	--color-theme-c-1: #20C0C0;
+	--color-theme-c-2: #40E0E0;
+	--color-theme-c-3: #80FFFF;
+	--color-theme-m-0: #801080;
+	--color-theme-m-1: #C020C0;
+	--color-theme-m-2: #E040E0;
+	--color-theme-m-3: #FF80FF;
+	--color-theme-y-0: #808010;
+	--color-theme-y-1: #C0C020;
+	--color-theme-y-2: #E0E040;
+	--color-theme-y-3: #FFFF80;
+	--color-theme-r-0: #801010;
+	--color-theme-r-1: #C02020;
+	--color-theme-r-2: #E04040;
+	--color-theme-r-3: #FF8080;
+	--color-theme-g-0: #108010;
+	--color-theme-g-1: #20C020;
+	--color-theme-g-2: #40E040;
+	--color-theme-g-3: #80FF80;
+	--color-theme-b-0: #101080;
+	--color-theme-b-1: #2020C0;
+	--color-theme-b-2: #4040E0;
+	--color-theme-b-3: #8080FF;
+	/* ui-overlays (DARK) */
+	--ui-hover-overlay: rgb(255 255 255 / 0.05);
+	--ui-active-overlay: rgb(255 255 255 / 0.10);
+	--ui-contrast-overlay: rgb(255 255 255 / 0.40);
+	--ui-disabled-overlay: rgb(0 0 0 / 0.40);
+}
+
+@theme inline {
+	/* Main colors */
+	--color-theme-bg-0: var(--color-theme-bg-0);
+	--color-theme-bg-1: var(--color-theme-bg-1);
+	--color-theme-bg-2: var(--color-theme-bg-2);
+	--color-theme-bg-3: var(--color-theme-bg-3);
+	--color-theme-fg-0: var(--color-theme-fg-0);
+	--color-theme-fg-1: var(--color-theme-fg-1);
+	--color-theme-fg-2: var(--color-theme-fg-2);
+	/* CMY/RGB accents */
+	--color-theme-c-0: var(--color-theme-c-0);
+	--color-theme-c-1: var(--color-theme-c-1);
+	--color-theme-c-2: var(--color-theme-c-2);
+	--color-theme-c-3: var(--color-theme-c-3);
+	--color-theme-m-0: var(--color-theme-m-0);
+	--color-theme-m-1: var(--color-theme-m-1);
+	--color-theme-m-2: var(--color-theme-m-2);
+	--color-theme-m-3: var(--color-theme-m-3);
+	--color-theme-y-0: var(--color-theme-y-0);
+	--color-theme-y-1: var(--color-theme-y-1);
+	--color-theme-y-2: var(--color-theme-y-2);
+	--color-theme-y-3: var(--color-theme-y-3);
+	--color-theme-r-0: var(--color-theme-r-0);
+	--color-theme-r-1: var(--color-theme-r-1);
+	--color-theme-r-2: var(--color-theme-r-2);
+	--color-theme-r-3: var(--color-theme-r-3);
+	--color-theme-g-0: var(--color-theme-g-0);
+	--color-theme-g-1: var(--color-theme-g-1);
+	--color-theme-g-2: var(--color-theme-g-2);
+	--color-theme-g-3: var(--color-theme-g-3);
+	--color-theme-b-0: var(--color-theme-b-0);
+	--color-theme-b-1: var(--color-theme-b-1);
+	--color-theme-b-2: var(--color-theme-b-2);
+	--color-theme-b-3: var(--color-theme-b-3);
+	/* ui-overlay */
+	--color-ui-hover: var(--ui-hover-overlay);
+	--color-ui-active: var(--ui-active-overlay);
+	--color-ui-contrast: var(--ui-contrast-overlay);
+	--color-ui-disabled: var(--ui-disabled-overlay);
+	/* shadcn/ui mappings */
+	--color-sidebar-ring: var(--sidebar-ring);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar: var(--sidebar);
+	--color-chart-5: var(--chart-5);
+	--color-chart-4: var(--chart-4);
+	--color-chart-3: var(--chart-3);
+	--color-chart-2: var(--chart-2);
+	--color-chart-1: var(--chart-1);
+	--color-ring: var(--ring);
+	--color-input: var(--input);
+	--color-border: var(--border);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-accent: var(--accent);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-muted: var(--muted);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-secondary: var(--secondary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-primary: var(--primary);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-popover: var(--popover);
+	--color-card-foreground: var(--card-foreground);
+	--color-card: var(--card);
+	--color-foreground: var(--foreground);
+	--color-background: var(--background);
+	/* Radius */
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+	--radius-2xl: calc(var(--radius) + 8px);
+	--radius-3xl: calc(var(--radius) + 12px);
+	--radius-4xl: calc(var(--radius) + 16px);
+}
+
+@layer base {
+	body {
+		background-color: var(--color-theme-bg-0);
+	}
+
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--border);
+		outline-color: var(--border);
+	}
+}
+
+/*
+ * KaTeX (katex.min.css) gives .katex its own line-height of 1.2.
+ * When inline math sits inside a paragraph that line-height adds a strut of its own.
+ * Thus stretching the line box and leaving a visible gap under the line.
+ * Collapse it so math rows keep the paragraph's rhythm.
+ */
+.katex {
+	line-height: 0;
+}
