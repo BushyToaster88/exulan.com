@@ -1,7 +1,11 @@
 import type { Metadata } from "next"
 
+import { SITE_DESCRIPTION, SITE_NAME } from "@/constants"
+
 export const metadata: Metadata = {
-	title: "About me",
+	// The site name alone, rather than the "%s - Exulan" template.
+	title: { absolute: SITE_NAME },
+	description: SITE_DESCRIPTION,
 	alternates: { canonical: "/" },
 }
 

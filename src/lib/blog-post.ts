@@ -5,6 +5,8 @@ export type BlogMetadata = {
 	thumbnail?: string
 	title: string
 	desc: string
+	/** Longer description for search results and link cards. Falls back to `desc`. */
+	metaDesc?: string
 	date: string
 	edit: string
 	tags: string[]

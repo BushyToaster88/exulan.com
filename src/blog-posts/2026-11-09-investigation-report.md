@@ -1,9 +1,10 @@
 ---
 title: "IBM Power S822 (8284-22A): Capacity on Demand"
 desc: "Reverse engineered by Deepseek V4.1 Flash 1017."
+metaDesc: "A report on IBM Power S822 (8284-22A) Capacity on Demand and the IBM service processor, reverse engineered by Deepseek V4.1 Flash 1017."
 date: 2026-11-09T09:00+11:00
 edit: 2026-11-09T09:00+11:00
-tags: ["report"]
+tags: ["IBM Power S822", "8284-22A", "service processor", "Capacity on Demand", "POWER8", "report"]
 id: "2026-11-09-investigation-report"
 ---
 

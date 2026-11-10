@@ -3,12 +3,20 @@ import { notFound } from "next/navigation"
 
 import { getPost, POST_ID_LIST } from "@/blog-posts"
 
-import { WEBSITE_AUTHOR, WEBSITE_URL } from "@/constants"
+import { DEFAULT_OG_IMAGE, SITE_LANGUAGE, SITE_LOCALE, SITE_NAME, WEBSITE_AUTHOR, WEBSITE_URL } from "@/constants"
 import { checkMetadata } from "@/lib/blog-post"
+import { absoluteUrl, serializeJsonLd } from "@/lib/seo"
 import BlogPostContent from "./_content"
 
 export function generateStaticParams() {
 	return POST_ID_LIST.map(postId => ({ postId }))
+}
+
+/** Preview image for a post: its own thumbnail if it has one, otherwise the site card. */
+function postImage(postId: string, thumbnail: string | undefined, title: string) {
+	return thumbnail
+		? { url: `/assets/blogs/${postId}/${thumbnail}`, alt: title }
+		: DEFAULT_OG_IMAGE
 }
 
 export async function generateMetadata({ params }: { readonly params: Promise<{ postId: string }> }): Promise<Metadata> {
@@ -24,45 +32,40 @@ export async function generateMetadata({ params }: { readonly params: Promise<{ 
 			date: postDate,
 			edit: postEditDate,
 			desc: postDesc,
+			metaDesc: postMetaDesc,
 			tags: postTags,
 			title: postTitle,
 			thumbnail: postThumbnail,
 		},
 	} = post
 
+	const description = postMetaDesc ?? postDesc
+	const image = postImage(postId, postThumbnail, postTitle)
+
 	return {
 		title: postTitle,
-		description: postDesc,
+		description,
+		keywords: postTags,
 		alternates: { canonical: `/blog/${postId}` },
 		authors: [WEBSITE_AUTHOR],
 		openGraph: {
 			type: "article",
 			url: `/blog/${postId}`,
+			title: postTitle,
+			description,
+			siteName: SITE_NAME,
+			locale: SITE_LOCALE,
 			publishedTime: postDate,
 			modifiedTime: postEditDate || postDate,
 			authors: [WEBSITE_AUTHOR.url],
 			tags: postTags,
-			...(postThumbnail
-				? {
-					images: {
-						url: `/assets/blogs/${postId}/${postThumbnail}`,
-						alt: postTitle,
-					},
-				}
-				: {}),
+			images: [image],
 		},
 		twitter: {
-			card: postThumbnail ? "summary_large_image" : "summary",
+			card: "summary_large_image",
 			title: postTitle,
-			description: postDesc,
-			...(postThumbnail
-				? {
-					images: {
-						url: `/assets/blogs/${postId}/${postThumbnail}`,
-						alt: postTitle,
-					},
-				}
-				: {}),
+			description,
+			images: [{ url: image.url, alt: image.alt }],
 		},
 	}
 }
@@ -88,28 +91,44 @@ export default async function BlogPost(
 		date: postDate,
 		edit: postEditDate,
 		desc: postDesc,
+		metaDesc: postMetaDesc,
 		tags: postTags,
 		title: postTitle,
 		thumbnail: postThumbnail,
 	} = metadata
 
 	const postUrl = `${WEBSITE_URL}/blog/${postId}`
-	const articleJsonLd: Record<string, unknown> = {
-		"@context": "https://schema.org",
-		"@type": "BlogPosting",
-		"headline": postTitle,
-		"description": postDesc,
-		"image": postThumbnail ? `${WEBSITE_URL}/assets/blogs/${postId}/${postThumbnail}` : undefined,
-		"datePublished": postDate,
-		"dateModified": postEditDate || postDate,
-		"author": { "@type": "Person", ...WEBSITE_AUTHOR },
-		"publisher": { "@type": "Person", ...WEBSITE_AUTHOR },
-		"mainEntityOfPage": { "@type": "WebPage", "@id": postUrl },
-		"url": postUrl,
-	}
+	const blogUrl = `${WEBSITE_URL}/blog`
+	const author = { "@type": "Person", ...WEBSITE_AUTHOR }
 
-	if (postTags.length > 0) {
-		articleJsonLd.keywords = postTags.join(", ")
+	const structuredData = {
+		"@context": "https://schema.org",
+		"@graph": [
+			{
+				"@type": "BlogPosting",
+				"@id": `${postUrl}#article`,
+				"headline": postTitle,
+				"description": postMetaDesc ?? postDesc,
+				"image": [absoluteUrl(postImage(postId, postThumbnail, postTitle).url)],
+				"datePublished": postDate,
+				"dateModified": postEditDate || postDate,
+				"inLanguage": SITE_LANGUAGE,
+				"author": author,
+				"publisher": author,
+				"mainEntityOfPage": { "@type": "WebPage", "@id": postUrl },
+				"url": postUrl,
+				"isPartOf": { "@type": "Blog", "@id": `${blogUrl}#blog`, "name": `${SITE_NAME} blog`, "url": blogUrl },
+				...(postTags.length > 0 ? { keywords: postTags.join(", ") } : {}),
+			},
+			{
+				"@type": "BreadcrumbList",
+				"itemListElement": [
+					{ "@type": "ListItem", "position": 1, "name": "Home", "item": WEBSITE_URL },
+					{ "@type": "ListItem", "position": 2, "name": "Blog", "item": blogUrl },
+					{ "@type": "ListItem", "position": 3, "name": postTitle, "item": postUrl },
+				],
+			},
+		],
 	}
 
 	return (
@@ -119,7 +138,7 @@ export default async function BlogPost(
 			</BlogPostContent>
 			<script
 				type="application/ld+json"
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+				dangerouslySetInnerHTML={{ __html: serializeJsonLd(structuredData) }}
 			/>
 		</>
 	)
