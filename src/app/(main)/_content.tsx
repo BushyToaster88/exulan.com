@@ -38,8 +38,19 @@ export default function HomeContent() {
 	}, [])
 
 	return (
-		<div className="min-h-[60vh] flex items-center">
-			<div className="container mx-auto px-4 py-16 text-shadow-lg/30">
+		<div className="min-h-screen">
+			<div className="relative overflow-hidden">
+				<img
+					src="/assets/banner.gif"
+					className="block w-full h-auto max-h-[400px] object-cover object-left-top"
+					width={1360}
+					height={480}
+					alt="A terminal prompt, root@archpower, with a blinking cursor"
+				/>
+				<div className="absolute bottom-0 left-0 right-0 border-b" />
+			</div>
+
+			<div className="container mx-auto px-4 py-10 text-shadow-lg/30">
 				<h1 className="text-left text-5xl mb-6">Gday, welcome to my website!</h1>
 
 				<div className="max-w-prose space-y-4">
