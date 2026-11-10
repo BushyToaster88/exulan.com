@@ -8,6 +8,9 @@ export const WEBSITE_AUTHOR = {
 
 export const SITE_NAME = "Exulan"
 export const SITE_DESCRIPTION = "The personal website of Exulan, an Aussie who loves owning their own equipment, running servers and hosting Tor relays."
+/** Title and description for the home page's link previews (Discord, Twitter and similar). */
+export const EMBED_TITLE = "The personal website of Exulan, an Aussie who loves owning their own equipment, running servers and hosting Tor relays."
+export const EMBED_DESCRIPTION = "I'm an Aussie who loves owning my own equipment, messing around with servers and abusing my ISP by running Tor relays."
 export const BLOG_DESCRIPTION = "Random stuff that should be documented on the internet."
 
 /** Language and region of the content (BCP 47 for HTML and JSON-LD, then the Open Graph form). */
