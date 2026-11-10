@@ -28,7 +28,7 @@ export default function MainLayout({ children }: { readonly children: React.Reac
 				<Navbar />
 				<main className="flex-1">{children}</main>
 				<Footer />
-				<MosaicBackground className="fixed inset-0 -z-10" />
+				<MosaicBackground className="fixed inset-0 h-lvh -z-10" />
 			</div>
 		</div>
 	)

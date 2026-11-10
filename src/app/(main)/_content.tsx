@@ -23,29 +23,25 @@ const BANNER = {
 	content: { x: 170, y: 4, width: 1030, height: 374 },
 }
 
+/** The age exactly as shown on the page. Its last digit changes about every 3.2 seconds. */
+function formatAge() {
+	return calculateAge().toFixed(7)
+}
+
 export default function HomeContent() {
-	const [age, setAge] = useState<Decimal | null>(null)
+	const [age, setAge] = useState<string | null>(null)
 
 	useLayoutEffect(() => {
 		// eslint-disable-next-line react-hooks/set-state-in-effect
-		setAge(calculateAge())
+		setAge(formatAge())
 	}, [])
 
 	useEffect(() => {
-		let running = true
-		function tick() {
-			if (!running) {
-				return
-			}
-
-			setAge(calculateAge())
-			requestAnimationFrame(tick)
-		}
-
-		requestAnimationFrame(tick)
-		return () => {
-			running = false
-		}
+		// Checking a few times a second is plenty. The state is the formatted text, and React
+		// skips the re-render when it has not changed, so the page only updates when a digit
+		// actually ticks over instead of on every animation frame.
+		const interval = setInterval(() => setAge(formatAge()), 200)
+		return () => clearInterval(interval)
 	}, [])
 
 	return (
@@ -81,13 +77,12 @@ export default function HomeContent() {
 				<div className="max-w-prose space-y-4">
 					<p>There isn&apos;t much here other than random stuff that I believe should be documented on the internet.</p>
 					<p>
-						I&apos;m <u className="decoration-solid decoration-theme-fg-2">{age?.toFixed(7) ?? "..."}</u> years old, a proud Aussie, and I love my country.
+						I&apos;m <u className="decoration-solid decoration-theme-fg-2">{age ?? "..."}</u> years old, a proud Aussie, and I love my country.
 					</p>
 					<p>I love owning my own equipment, running and managing servers, hosting Tor relays, and seeding torrents.</p>
 					<p>
 						This website and the tiling animation were forked from{" "}
-						<a href="https://rafa-br34.dev/" className="underline" target="_blank" rel="noopener">rafa-br34.dev</a>{" "}
-						(awesome person btw).
+						<a href="https://rafa-br34.dev/" className="underline" target="_blank" rel="noopener">rafa-br34.dev</a> (awesome person btw).
 					</p>
 					<p>
 						Reach out on Discord if you want, I&apos;m chronically online and will respond there: <code>Exulan</code>
