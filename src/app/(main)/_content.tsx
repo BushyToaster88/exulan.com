@@ -12,6 +12,17 @@ function calculateAge() {
 	return new Decimal(Date.now()).sub(BIRTHDAY).div(MS_PER_GREGORIAN_YEAR)
 }
 
+// The terminal recording is 1360x480, but everything it ever draws stays inside `content`;
+// the rest of the frame is flat background. The banner shows just that region, so the
+// output is never cut off, sits larger on small screens, and lines up with the text below.
+const BANNER = {
+	src: "/assets/banner.gif",
+	width: 1360,
+	height: 480,
+	background: "#0c191f",
+	content: { x: 170, y: 4, width: 1030, height: 374 },
+}
+
 export default function HomeContent() {
 	const [age, setAge] = useState<Decimal | null>(null)
 
@@ -39,15 +50,29 @@ export default function HomeContent() {
 
 	return (
 		<div className="min-h-screen">
-			<div className="relative overflow-hidden">
-				<img
-					src="/assets/banner.gif"
-					className="block w-full h-auto max-h-[400px] object-cover object-left-top"
-					width={1360}
-					height={480}
-					alt="A terminal prompt, root@archpower, with a blinking cursor"
-				/>
-				<div className="absolute bottom-0 left-0 right-0 border-b" />
+			<div className="border-b" style={{ backgroundColor: BANNER.background }}>
+				<div className="container mx-auto px-4 py-4">
+					<div
+						className="relative w-full overflow-hidden"
+						style={{
+							maxWidth: BANNER.content.width,
+							aspectRatio: `${BANNER.content.width} / ${BANNER.content.height}`,
+						}}
+					>
+						<img
+							src={BANNER.src}
+							className="absolute block h-auto max-w-none"
+							style={{
+								width: `${(BANNER.width / BANNER.content.width) * 100}%`,
+								left: `${(-BANNER.content.x / BANNER.content.width) * 100}%`,
+								top: `${(-BANNER.content.y / BANNER.content.height) * 100}%`,
+							}}
+							width={BANNER.width}
+							height={BANNER.height}
+							alt="Terminal animation: fastfetch running on archpower, an IBM Power 8284-22A with Arch POWER"
+						/>
+					</div>
+				</div>
 			</div>
 
 			<div className="container mx-auto px-4 py-10 text-shadow-lg/30">
