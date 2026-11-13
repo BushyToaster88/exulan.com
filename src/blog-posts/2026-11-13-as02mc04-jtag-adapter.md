@@ -1,11 +1,11 @@
 ---
 title: "A JTAG adapter for the Alibaba AS02MC04 FPGA card"
-desc: "A 24 mm board that puts a Digilent HS3 on the card's 6-pin header. Claude did the KiCad work, JLCPCB is building it."
+desc: "A small board that plugs a Digilent HS3 onto the card's 6-pin JTAG header."
 metaDesc: "A small JLCPCB-assembled adapter between the Digilent JTAG-HS3 and the 6-pin 1.8 V JTAG header of the Alibaba Cloud AS02MC04 (Xilinx XCKU3P) FPGA card: pinout, protection parts, what it cost and what is still untested."
 date: 2026-11-13T22:00+11:00
 edit: 2026-11-13T22:00+11:00
 thumbnail: "thumb.png"
-tags: ["FPGA", "JTAG", "AS02MC04", "XCKU3P", "Digilent HS3", "KiCad", "JLCPCB", "PCB"]
+tags: ["FPGA", "JTAG", "AS02MC04", "KiCad", "JLCPCB"]
 id: "2026-11-13-as02mc04-jtag-adapter"
 ---
 
@@ -24,7 +24,9 @@ Claude drew this board, over about three days of back and forth with me. It wrot
 
 I took a photo of the header on the card, held a printed gauge against the connectors, chose the shipping and paid.
 
-## The header on the card
+## The design
+
+### The header on the card
 
 J4 sits at the rear end of the card, the end away from the bracket, on the heatsink side. It is a surface-mount pin header with no shroud and no key, so a socket can be pushed onto it either way round.
 
@@ -41,7 +43,7 @@ Pin 3 really is printed `TDK` on the card. It is TCK.
 
 The card's JTAG runs at 1.8 V. The FPGA's configuration bank has an absolute maximum of 2.35 V, so a 3.3 V probe could damage it. The HS3 handles this by powering its output buffers from a reference pin, which the adapter connects to the card's own `1V8`.
 
-## What is on the board
+### What is on the board
 
 ![Front of the board](render_front.webp)
 
@@ -61,7 +63,7 @@ The back has the pin names and two reminders in white: 1.8 V only, and take the 
 
 ![Back of the board](render_back.webp)
 
-## Things I already know are not great
+### Things I already know are not great
 
 R9 is rated 0.75 W and would turn about 0.7 W into heat in a dead short. A thermal estimate (not a measurement) puts it somewhere between 105 and 145 C, against a limit of 155 C, and that is at room temperature. In a warm case it could go past the limit, so a fault should not be left connected. Two 10 ohm resistors in parallel would have been the better choice.
 
@@ -69,11 +71,13 @@ The LED runs from 1.8 V, which is barely enough for a red one. It will be dim, a
 
 R7 is a 10k resistor that holds Q1 off when no 1.8 V is present. Claude's last review before ordering suggested 1k instead, because with 10k a crossed pair of jumper wires, or a reversed socket that is only half pushed on, can turn Q1 partly on. I decided to live with that and ordered it as it was. If there is ever a revision D, it gets the 1k.
 
-## Checking the pitch with paper
+## Getting it made
+
+### Checking the pitch with paper
 
 Both pitches had to be right, 2.54 mm on the card header and 2.00 mm on the HS3, and I was not going to find out from a photo. Before ordering I printed a [1:1 gauge sheet](https://github.com/BushyToaster88/as02mc04-jtag-adapter/blob/main/docs/pitch_gauge.pdf) at 100 %, checked its 100 mm bar with a ruler, and held both connectors against it. They lined up with the 2.54 mm and 2.00 mm rows.
 
-## Ordering
+### Ordering
 
 ![JLCPCB's placement preview](jlcpcb_preview.webp)
 
@@ -82,6 +86,8 @@ JLCPCB makes the board and solders the parts on. The parts list has 12 lines, 15
 The thing to look at in JLCPCB's placement preview is the black header. If it is fitted half a turn round, the HS3's ground pins sit on the 1.8 V line, and nothing on the board protects against that. The gap in the header's wall has to face the 3 mm hole, and in the preview above it does. I also turned on "Confirm Parts Placement". The order page says the boards cannot go into production until I have confirmed JLCPCB's own placement drawing, which I am still waiting for.
 
 On the order form, the tighter outline tolerance is only offered on boards of 50 x 50 mm or more, so this one gets the regular ±0.2 mm. JLCPCB also takes only one coupon per order. I had two, and picking the second deselected the first.
+
+### What it cost
 
 What I paid, in US dollars, for five boards with all five assembled:
 
@@ -95,7 +101,7 @@ What I paid, in US dollars, for five boards with all five assembled:
 
 That was about A$75 on the day. Most of the assembly cost is fixed fees, so building two instead of five would have saved very little. I paid at 14:44 and JLCPCB had approved the files by 14:49. Since then the order has been waiting for their engineers to prepare the production data.
 
-## Ordering one yourself
+### Ordering one yourself
 
 The whole project is on GitHub at [BushyToaster88/as02mc04-jtag-adapter](https://github.com/BushyToaster88/as02mc04-jtag-adapter): the KiCad files, the scripts that generate them, and the README with the full ordering and bring-up steps. It is under the CERN-OHL-P v2 licence, so you can change it and have your own made.
 
