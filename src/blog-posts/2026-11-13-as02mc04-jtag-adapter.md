@@ -5,7 +5,7 @@ metaDesc: "A small JLCPCB-assembled adapter between the Digilent JTAG-HS3 and th
 date: 2026-11-13T22:00+11:00
 edit: 2026-11-13T22:00+11:00
 thumbnail: "thumb.png"
-tags: ["FPGA", "JTAG", "AS02MC04", "KiCad", "JLCPCB"]
+tags: ["FPGA", "JTAG", "AS02MC04", "XCKU3P", "Digilent HS3", "KiCad", "JLCPCB", "PCB"]
 id: "2026-11-13-as02mc04-jtag-adapter"
 ---
 
