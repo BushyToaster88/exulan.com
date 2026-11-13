@@ -71,7 +71,7 @@ R7 is a 10k resistor that holds Q1 off when no 1.8 V is present. Claude's last r
 
 ## Checking the pitch with paper
 
-Both pitches had to be right, 2.54 mm on the card header and 2.00 mm on the HS3, and I was not going to find out from a photo. Before ordering I printed a [1:1 gauge sheet](pitch_gauge.pdf) at 100 %, checked its 100 mm bar with a ruler, and held both connectors against it. They lined up with the 2.54 mm and 2.00 mm rows.
+Both pitches had to be right, 2.54 mm on the card header and 2.00 mm on the HS3, and I was not going to find out from a photo. Before ordering I printed a [1:1 gauge sheet](https://github.com/BushyToaster88/as02mc04-jtag-adapter/blob/main/docs/pitch_gauge.pdf) at 100 %, checked its 100 mm bar with a ruler, and held both connectors against it. They lined up with the 2.54 mm and 2.00 mm rows.
 
 ## Ordering
 
@@ -97,12 +97,9 @@ That was about A$75 on the day. Most of the assembly cost is fixed fees, so buil
 
 ## Ordering one yourself
 
-If you have the same card and an HS3, these are the files I sent to JLCPCB:
+The whole project is on GitHub at [BushyToaster88/as02mc04-jtag-adapter](https://github.com/BushyToaster88/as02mc04-jtag-adapter): the KiCad files, the scripts that generate them, and the README with the full ordering and bring-up steps. It is under the CERN-OHL-P v2 licence, so you can change it and have your own made.
 
-- [Gerbers](as02mc04_jtag_hs3-gerbers.zip), for the bare board
-- [Bill of materials](as02mc04_jtag_hs3-bom.csv), with LCSC part numbers
-- [Placement file](as02mc04_jtag_hs3-cpl.csv)
-- [Schematic](schematic.pdf)
+If you have the same card and an HS3 and only want to order it, the three files JLCPCB needs are in the [`fab` folder](https://github.com/BushyToaster88/as02mc04-jtag-adapter/tree/main/fab): the Gerber zip, the parts list and the placement file.
 
 Mine have not arrived, so right now you would be ordering an untested board. I would wait until this post has photos of a working one.
 
