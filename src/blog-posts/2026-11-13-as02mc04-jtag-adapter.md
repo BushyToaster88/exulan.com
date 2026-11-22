@@ -1,9 +1,9 @@
 ---
 title: "A JTAG adapter for the Alibaba AS02MC04 FPGA card"
 desc: "A small board that plugs a Digilent HS3 onto the card's 6-pin JTAG header."
-metaDesc: "A small JLCPCB-assembled adapter between the Digilent JTAG-HS3 and the 6-pin 1.8 V JTAG header of the Alibaba Cloud AS02MC04 (Xilinx XCKU3P) FPGA card: pinout, protection parts, what it cost and what is still untested."
+metaDesc: "A small JLCPCB-assembled adapter between the Digilent JTAG-HS3 and the 6-pin 1.8 V JTAG header of the Alibaba Cloud AS02MC04 (Xilinx XCKU3P) FPGA card: pinout, protection parts, what it cost and the first test on the real card."
 date: 2026-11-13T22:00+11:00
-edit: 2026-11-13T22:00+11:00
+edit: 2026-11-22T16:45+11:00
 thumbnail: "thumb.png"
 tags: ["FPGA", "JTAG", "AS02MC04", "XCKU3P", "Digilent HS3", "KiCad", "JLCPCB", "PCB"]
 id: "2026-11-13-as02mc04-jtag-adapter"
@@ -14,7 +14,7 @@ I wanted to have some fun with an FPGA, so I bought an Alibaba Cloud AS02MC04 on
 I could have used six jumper wires. But one of the six pins is the card's 1.8 V rail, and I did not trust myself to get the wires right every time, so I had a small board made.
 
 > [!NOTE]
-> The boards were ordered today and are still at the factory. The pictures of the board are 3D renders from KiCad, not photos, and none of this has been tested on real hardware yet. I will update the post when the boards arrive.
+> Update, 22 November: the boards have arrived and the first one works. The HS3 reads the FPGA's device ID through it. The details are in [Does it work](#does-it-work) at the end. The pictures of the board are still 3D renders from KiCad, not photos.
 
 ![Renders of the adapter from five angles](showcase.webp)
 
@@ -83,7 +83,7 @@ Both pitches had to be right, 2.54 mm on the card header and 2.00 mm on the HS3,
 
 JLCPCB makes the board and solders the parts on. The parts list has 12 lines, 15 parts in all. Fourteen are placed by machine. The socket for the card is a through-hole part that somebody solders by hand, and it has its own fee.
 
-The thing to look at in JLCPCB's placement preview is the black header. If it is fitted half a turn round, the HS3's ground pins sit on the 1.8 V line, and nothing on the board protects against that. The gap in the header's wall has to face the 3 mm hole, and in the preview above it does. I also turned on "Confirm Parts Placement". The order page says the boards cannot go into production until I have confirmed JLCPCB's own placement drawing, which I am still waiting for.
+The thing to look at in JLCPCB's placement preview is the black header. If it is fitted half a turn round, the HS3's ground pins sit on the 1.8 V line, and nothing on the board protects against that. The gap in the header's wall has to face the 3 mm hole, and in the preview above it does. I also turned on "Confirm Parts Placement". The order page says the boards cannot go into production until I have confirmed JLCPCB's own placement drawing. The email asking me to confirm it came the day after I ordered. It gives 72 hours before the order goes ahead by itself. The drawing is behind the "DFM Analysis" link on the order page. It showed all 15 parts, the engineers had changed nothing, and the black header was the right way round, so I confirmed it on 15 November.
 
 On the order form, the tighter outline tolerance is only offered on boards of 50 x 50 mm or more, so this one gets the regular ±0.2 mm. JLCPCB also takes only one coupon per order. I had two, and picking the second deselected the first.
 
@@ -99,7 +99,7 @@ What I paid, in US dollars, for five boards with all five assembled:
 | New-user coupon | -10.00 |
 | **Total** | **51.54** |
 
-That was about A$75 on the day. Most of the assembly cost is fixed fees, so building two instead of five would have saved very little. I paid at 14:44 and JLCPCB had approved the files by 14:49. Since then the order has been waiting for their engineers to prepare the production data.
+That was about A$75 on the day. Most of the assembly cost is fixed fees, so building two instead of five would have saved very little. I paid at 14:44 and JLCPCB had approved the files by 14:49.
 
 ### Ordering one yourself
 
@@ -107,19 +107,38 @@ The whole project is on GitHub at [BushyToaster88/as02mc04-jtag-adapter](https:/
 
 If you have the same card and an HS3 and only want to order it, the three files JLCPCB needs are in the [`fab` folder](https://github.com/BushyToaster88/as02mc04-jtag-adapter/tree/main/fab): the Gerber zip, the parts list and the placement file.
 
-Mine have not arrived, so right now you would be ordering an untested board. I would wait until this post has photos of a working one.
+Mine have arrived and the board works: the HS3 connects to the FPGA through it, as described below. I have not loaded a design through it yet.
 
 The settings I used: FR-4, 2 layers, 1.6 mm, 1 oz copper, lead-free HASL, tented vias. For assembly: Economic, top side, parts selected by customer, "Confirm Parts Placement" set to Yes. All 12 lines of the parts list matched a part in stock when I ordered. In the placement preview, check that the gap in the wall of the black header faces the 3 mm hole, and that the socket lies over the empty part of the board with its openings at the edge with the cut-off corner. I also pasted this into the assembly remark box:
 
 > J1 (C492354): keep the rotation from the CPL. The key slot of the shroud faces the board edge with the 3 mm hole. Do not turn it by 180 degrees.
 > J2 (C54876735): symmetric 1x6 right-angle socket with no polarity. Its body lies on the board with the openings at the edge that has the chamfered corner. Do not rotate it.
 
-## When the boards arrive
+## Does it work
 
-I will go over one with a multimeter before it gets near the card. Then it goes on the card, with the card powered from a PCIe slot, and I ask for the device ID at a cautious 6 MHz:
+The boards were ordered on 13 November and I had one plugged in on 22 November. The card is in a PCIe slot in a server running Ubuntu 24.04, with the adapter on J4 and the HS3 on the adapter.
+
+The plan was to use openFPGALoader, but it is not installed on that server and OpenOCD 0.12.0 is, so Claude logged in over SSH and used that instead, at the same cautious 6 MHz:
 
 ```bash
-openFPGALoader -c digilent_hs3 --freq 6000000 --detect
+openocd -f interface/ftdi/digilent_jtag_hs3.cfg \
+  -c "transport select jtag; adapter speed 6000" \
+  -c "jtag newtap xcku3p tap -irlen 6 -ircapture 0x1 -irmask 0x3 -expected-id 0x04a63093" \
+  -c init -c scan_chain -c shutdown
 ```
 
-The chain should hold one device, an XCKU3P with IDCODE `0x04A63093`. If it reports that, I will add real photos and the output here. If it does not, I will write up what I find.
+```bash
+Info : clock speed 6000 kHz
+Info : JTAG tap: xcku3p.tap tap/device found: 0x04a63093 (mfg: 0x049 (Xilinx), part: 0x4a63, ver: 0x0)
+   TapName             Enabled  IdCode     Expected   IrLen IrCap IrMask
+-- ------------------- -------- ---------- ---------- ----- ----- ------
+ 0 xcku3p.tap              Y     0x04a63093 0x04a63093     6 0x01  0x03
+```
+
+One device in the chain, IDCODE `0x04A63093`, which is the XCKU3P. Five scans in a row gave the same answer with no errors.
+
+The very first scan did print an error. Without the `jtag newtap` line OpenOCD has to guess how long the chip's instruction register is. It guessed 2 bits, the XCKU3P has 6, and it complained about what it read back. With the length given, the error goes away.
+
+The server also sees the card on PCIe, as an Ethernet controller with the ID `dabc:1017`, so the image it shipped with is still running.
+
+So the adapter does its job. Reading the ID uses all four JTAG signals and the 1.8 V reference, which are the same connections that loading a design uses. I have not loaded a bitstream through it yet, and I have not plugged it on backwards to try the reverse protection and the LED. Real photos are still to come.
